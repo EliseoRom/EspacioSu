@@ -1,6 +1,6 @@
 # Espacio Su · Sitio web
 
-Sitio one-page de **Espacio Su** (Susanita Balcar) construido con **Next.js 14 (App Router)** y TypeScript.
+Sitio one-page de **Espacio Su**  construido con **Next.js 14 (App Router)** y TypeScript.
 
 ## Cómo correrlo
 
@@ -50,8 +50,3 @@ espacio-su/
 | `--orange-deep`| `#F0691F`| Naranja acento     |
 | `--white`     | `#FFFBF2` | Crema base         |
 
-## Contacto
-
-- 📧 Susanitabalcar@gmail.com
-- 📱 +54 343 507 1329 (WhatsApp)
-- 📸 @espacio_su
