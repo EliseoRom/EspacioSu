@@ -151,9 +151,7 @@ export default function Carousel() {
                 fontSize: 17,
               }}
             >
-              Una selección curada de lo que cuidás cada día — cremas, aromas,
-              regalos y rincones de calma. Pasá las imágenes con flechitas o
-              arrastrando.
+              Una selección cuidada para cada día: cremas, aromas, regalos y rincones de calma.
             </p>
           </div>
           <div className="carousel-controls">
