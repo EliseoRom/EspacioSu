@@ -3,50 +3,111 @@
 import { useEffect, useRef } from "react";
 import { useReveal } from "./useReveal";
 
-type TwSpec = { text: string; delay: number; className?: string };
+type TwPart = { text: string; className?: string };
+type TwLine = { parts: TwPart[] };
 
-function Typewriter({ specs }: { specs: TwSpec[] }) {
-  const refs = useRef<(HTMLSpanElement | null)[]>([]);
+const HERO_LINES: TwLine[] = [
+  {
+    parts: [
+      { text: "Apreciar" },
+      { text: " cada" },
+      { text: " día más", className: "accent-g" },
+    ],
+  },
+  {
+    parts: [
+      { text: "el" },
+      { text: " cuerpo,", className: "accent-o" },
+      { text: " cuidarlo" },
+    ],
+  },
+  {
+    parts: [
+      { text: "por" },
+      { text: " dentro", className: "accent-g" },
+      { text: " y por" },
+      { text: " fuera.", className: "accent-o" },
+    ],
+  },
+];
+
+const CHAR_MS = 65;
+
+function HeroTypewriter({ lines }: { lines: TwLine[] }) {
+  const refs = useRef<Map<string, HTMLSpanElement | null>>(new Map());
+  const refKey = (lineIdx: number, partIdx: number) => `${lineIdx}-${partIdx}`;
 
   useEffect(() => {
     const timers: number[] = [];
-    specs.forEach((spec, idx) => {
-      const el = refs.current[idx];
-      if (!el) return;
-      el.textContent = "";
-      const t = window.setTimeout(() => {
-        let i = 0;
-        const speed = 55 + Math.random() * 20;
-        const tick = () => {
-          if (i < spec.text.length) {
-            el.textContent += spec.text.charAt(i);
-            i++;
-            const t2 = window.setTimeout(
-              tick,
-              speed + (Math.random() * 30 - 15)
-            );
-            timers.push(t2);
-          } else {
-            const t3 = window.setTimeout(() => el.classList.add("done"), 800);
-            timers.push(t3);
-          }
-        };
-        tick();
-      }, spec.delay);
-      timers.push(t);
+
+    lines.forEach((line, lineIdx) => {
+      line.parts.forEach((_, partIdx) => {
+        const el = refs.current.get(refKey(lineIdx, partIdx));
+        if (el) el.textContent = "";
+      });
     });
+
+    const typeNext = (lineIdx: number, partIdx: number, charIdx: number) => {
+      if (lineIdx >= lines.length) return;
+
+      const part = lines[lineIdx].parts[partIdx];
+      const el = refs.current.get(refKey(lineIdx, partIdx));
+      if (!part || !el) return;
+
+      if (charIdx < part.text.length) {
+        el.textContent += part.text.charAt(charIdx);
+        timers.push(
+          window.setTimeout(() => typeNext(lineIdx, partIdx, charIdx + 1), CHAR_MS)
+        );
+        return;
+      }
+
+      if (partIdx + 1 < lines[lineIdx].parts.length) {
+        timers.push(window.setTimeout(() => typeNext(lineIdx, partIdx + 1, 0), CHAR_MS));
+        return;
+      }
+
+      if (lineIdx + 1 < lines.length) {
+        timers.push(window.setTimeout(() => typeNext(lineIdx + 1, 0, 0), CHAR_MS));
+      }
+    };
+
+    timers.push(window.setTimeout(() => typeNext(0, 0, 0), 200));
+
     return () => timers.forEach((t) => clearTimeout(t));
-  }, [specs]);
+  }, [lines]);
 
   return (
     <>
-      {specs.map((s, i) => (
+      <span className="hero-first-line">
+        {lines[0].parts.map((part, partIdx) => (
+          <span
+            key={partIdx}
+            ref={(el) => {
+              refs.current.set(refKey(0, partIdx), el);
+            }}
+            className={part.className}
+          />
+        ))}
+      </span>
+      <br />
+      {lines[1].parts.map((part, partIdx) => (
         <span
-          key={i}
+          key={partIdx}
           ref={(el) => {
-            refs.current[i] = el;
+            refs.current.set(refKey(1, partIdx), el);
           }}
-          className={`tw ${s.className ?? ""}`}
+          className={part.className}
+        />
+      ))}
+      <br />
+      {lines[2].parts.map((part, partIdx) => (
+        <span
+          key={partIdx}
+          ref={(el) => {
+            refs.current.set(refKey(2, partIdx), el);
+          }}
+          className={part.className}
         />
       ))}
     </>
@@ -245,32 +306,7 @@ export default function Hero() {
             Despierta tus sentidos llenos de aromas
           </div>
           <h1>
-            <span className="hero-first-line">
-              <Typewriter
-                specs={[
-                  { text: "Apreciar", delay: 200 },
-                  { text: " cada", delay: 700 },
-                  { text: " día más", delay: 1000, className: "accent-g" },
-                ]}
-              />
-            </span>
-            <br />
-            <Typewriter
-              specs={[
-                { text: "el", delay: 1600 },
-                { text: " cuerpo,", delay: 1800, className: "accent-o" },
-                { text: " cuidarlo", delay: 2400 },
-              ]}
-            />
-            <br />
-            <Typewriter
-              specs={[
-                { text: "por", delay: 3200 },
-                { text: " dentro", delay: 3400, className: "accent-g" },
-                { text: " y por", delay: 3900 },
-                { text: " fuera.", delay: 4300, className: "accent-o" },
-              ]}
-            />
+            <HeroTypewriter lines={HERO_LINES} />
           </h1>
           <p className="hero-manifest reveal">
             Con{" "}

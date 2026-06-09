@@ -38,19 +38,6 @@
     z-index: 0;
   }
 
-  /* ───── typewriter ───── */
-  .tw {
-    display: inline-block;
-    border-right: 2px solid currentColor;
-    white-space: pre-wrap;
-    animation: caret 0.8s steps(1) infinite;
-  }
-  .tw.done { border-right-color: transparent; animation: none; }
-  @keyframes caret {
-    0%, 49% { border-right-color: currentColor; }
-    50%, 100% { border-right-color: transparent; }
-  }
-
   /* ───── NAV ───── */
   .nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 110;
@@ -1200,5 +1187,163 @@
     .lavender-sprig {
       width: 38px;
       height: 76px;
+    }
+  }
+
+  /* ───── audio glass (liquid) ───── */
+  .audio-glass {
+    position: fixed;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%) translateX(-6px);
+    z-index: 105;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 5px;
+    border-radius: 22px;
+    background:
+      linear-gradient(
+        155deg,
+        rgba(255, 255, 255, 0.22) 0%,
+        rgba(255, 255, 255, 0.08) 50%,
+        rgba(255, 246, 227, 0.12) 100%
+      );
+    backdrop-filter: blur(22px) saturate(160%);
+    -webkit-backdrop-filter: blur(22px) saturate(160%);
+    border: 0.5px solid rgba(255, 255, 255, 0.35);
+    box-shadow:
+      inset 0 0.5px 0 rgba(255, 255, 255, 0.45),
+      0 6px 24px rgba(31, 42, 24, 0.05);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .audio-glass--visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(-50%) translateX(0);
+  }
+  .audio-glass__shine {
+    position: absolute;
+    inset: 1px 4px auto 4px;
+    height: 38%;
+    border-radius: 20px 20px 50% 50%;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.28) 0%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    pointer-events: none;
+  }
+  .audio-glass__btn {
+    position: relative;
+    z-index: 1;
+    width: 26px;
+    height: 26px;
+    border: none;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.14);
+    color: rgba(31, 42, 24, 0.42);
+    cursor: pointer;
+    transition:
+      background 0.25s,
+      color 0.25s,
+      transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .audio-glass__btn svg {
+    width: 11px;
+    height: 11px;
+  }
+  .audio-glass__btn:hover {
+    background: rgba(255, 255, 255, 0.28);
+    color: rgba(31, 42, 24, 0.6);
+    transform: scale(1.05);
+  }
+  .audio-glass__btn:active {
+    transform: scale(0.94);
+  }
+  .audio-glass__vol {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+  .audio-glass__icon {
+    width: 11px;
+    height: 11px;
+    color: rgba(31, 42, 24, 0.28);
+    flex-shrink: 0;
+  }
+  .audio-glass__slider {
+    position: relative;
+    width: 28px;
+    height: 72px;
+    display: grid;
+    place-items: center;
+    cursor: ns-resize;
+    touch-action: none;
+  }
+  .audio-glass__slider-track {
+    position: relative;
+    width: 2px;
+    height: 100%;
+    border-radius: 99px;
+    background: rgba(255, 255, 255, 0.18);
+    overflow: hidden;
+  }
+  .audio-glass__slider-fill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 99px;
+    background: linear-gradient(
+      180deg,
+      rgba(143, 201, 58, 0.45),
+      rgba(255, 138, 61, 0.35)
+    );
+    transition: height 0.12s ease-out;
+  }
+  .audio-glass__slider-thumb {
+    position: absolute;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    margin-left: -5px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.55);
+    border: 0.5px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0 1px 6px rgba(31, 42, 24, 0.1);
+    pointer-events: none;
+    transition: bottom 0.12s ease-out, transform 0.15s;
+  }
+  .audio-glass__slider:hover .audio-glass__slider-thumb,
+  .audio-glass__slider:active .audio-glass__slider-thumb {
+    transform: scale(1.15);
+    background: rgba(255, 255, 255, 0.72);
+  }
+
+  @media (max-width: 880px) {
+    .audio-glass {
+      left: 8px;
+      padding: 7px 4px;
+      gap: 6px;
+      border-radius: 18px;
+    }
+    .audio-glass__btn {
+      width: 24px;
+      height: 24px;
+    }
+    .audio-glass__slider {
+      width: 26px;
+      height: 60px;
     }
   }
