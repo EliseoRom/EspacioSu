@@ -3,12 +3,14 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const AUDIO_SRC = "/audio/primer-rayo-de-sol.mp3";
-const DEFAULT_VOLUME = 0.35;
+const DEFAULT_VOLUME = 0.8;
+const WELCOME_DONE_EVENT = "espacio-su:welcome-done";
 
 export default function AudioPlayer() {
   const audioRef = useRef<HTMLAudioElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
+  const started = useRef(false);
   const [playing, setPlaying] = useState(false);
   const [volume, setVolume] = useState(DEFAULT_VOLUME);
   const [visible, setVisible] = useState(false);
@@ -22,13 +24,15 @@ export default function AudioPlayer() {
     const audio = audioRef.current;
     if (!audio) return false;
     try {
+      audio.volume = volume;
       await audio.play();
       setPlaying(true);
+      started.current = true;
       return true;
     } catch {
       return false;
     }
-  }, []);
+  }, [volume]);
 
   const setVolumeFromY = useCallback((clientY: number) => {
     const track = sliderRef.current;
@@ -43,19 +47,40 @@ export default function AudioPlayer() {
     applyVolume(DEFAULT_VOLUME);
     const timer = window.setTimeout(() => setVisible(true), 600);
 
-    const start = async () => {
-      const ok = await play();
-      if (!ok) {
-        const resume = () => play();
-        document.addEventListener("click", resume, { once: true });
-        document.addEventListener("touchstart", resume, { once: true });
-        document.addEventListener("keydown", resume, { once: true });
-      }
+    const audio = audioRef.current;
+    if (!audio) return () => clearTimeout(timer);
+
+    audio.load();
+
+    const tryStart = () => {
+      if (started.current) return;
+      play();
     };
 
-    start();
+    const onInteraction = () => tryStart();
 
-    return () => clearTimeout(timer);
+    const interactionEvents = ["click", "touchstart", "keydown", "pointerdown"] as const;
+    interactionEvents.forEach((event) => {
+      document.addEventListener(event, onInteraction, { capture: true });
+    });
+
+    const onWelcomeDone = () => tryStart();
+    window.addEventListener(WELCOME_DONE_EVENT, onWelcomeDone);
+    audio.addEventListener("canplaythrough", tryStart, { once: true });
+
+    tryStart();
+    const retries = [200, 600, 1200, 2500, 4000].map((ms) =>
+      window.setTimeout(tryStart, ms)
+    );
+
+    return () => {
+      clearTimeout(timer);
+      retries.forEach(clearTimeout);
+      interactionEvents.forEach((event) => {
+        document.removeEventListener(event, onInteraction, { capture: true });
+      });
+      window.removeEventListener(WELCOME_DONE_EVENT, onWelcomeDone);
+    };
   }, [applyVolume, play]);
 
   useEffect(() => {
@@ -68,6 +93,7 @@ export default function AudioPlayer() {
     if (playing) {
       audio.pause();
       setPlaying(false);
+      started.current = false;
     } else {
       play();
     }
@@ -77,6 +103,7 @@ export default function AudioPlayer() {
     dragging.current = true;
     e.currentTarget.setPointerCapture(e.pointerId);
     setVolumeFromY(e.clientY);
+    play();
   };
 
   const onSliderPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -96,6 +123,8 @@ export default function AudioPlayer() {
         ref={audioRef}
         src={AUDIO_SRC}
         loop
+        autoPlay
+        playsInline
         preload="auto"
         aria-hidden="true"
       />
@@ -108,7 +137,7 @@ export default function AudioPlayer() {
 
         <button
           type="button"
-          className="audio-glass__btn"
+          className="audio-glass__btn audio-glass__btn--play"
           onClick={togglePlay}
           aria-label={playing ? "Pausar música" : "Reproducir música"}
         >

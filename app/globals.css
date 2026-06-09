@@ -1268,6 +1268,16 @@
   .audio-glass__btn:active {
     transform: scale(0.94);
   }
+  .audio-glass__btn--play {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.22);
+    color: rgba(31, 42, 24, 0.55);
+  }
+  .audio-glass__btn--play svg {
+    width: 16px;
+    height: 16px;
+  }
   .audio-glass__vol {
     position: relative;
     z-index: 1;
@@ -1338,12 +1348,108 @@
       gap: 6px;
       border-radius: 18px;
     }
-    .audio-glass__btn {
-      width: 24px;
-      height: 24px;
+    .audio-glass__btn--play {
+      width: 36px;
+      height: 36px;
+    }
+    .audio-glass__btn--play svg {
+      width: 14px;
+      height: 14px;
     }
     .audio-glass__slider {
       width: 26px;
       height: 60px;
     }
+  }
+
+  /* ───── welcome splash ───── */
+  .welcome-splash {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483646;
+    display: grid;
+    place-items: center;
+    background: var(--white);
+    opacity: 0;
+    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: all;
+  }
+  .welcome-splash--in {
+    opacity: 1;
+  }
+  .welcome-splash--out {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .welcome-splash__glow {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 600px 400px at 30% 40%, rgba(143, 201, 58, 0.2), transparent 65%),
+      radial-gradient(ellipse 500px 450px at 75% 55%, rgba(255, 138, 61, 0.18), transparent 65%);
+    pointer-events: none;
+  }
+  .welcome-splash__content {
+    position: relative;
+    text-align: center;
+    padding: 0 32px;
+    animation: welcome-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .welcome-splash__eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+    opacity: 0.7;
+  }
+  .welcome-splash__title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 6vw, 56px);
+    font-weight: 500;
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+  .welcome-splash__subtitle {
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--ink-soft);
+    letter-spacing: 0.02em;
+    animation: welcome-pulse 2s ease-in-out infinite;
+  }
+  .welcome-splash__bar {
+    width: 120px;
+    height: 2px;
+    margin: 28px auto 0;
+    border-radius: 99px;
+    background: rgba(143, 201, 58, 0.15);
+    overflow: hidden;
+  }
+  .welcome-splash__bar-fill {
+    display: block;
+    height: 100%;
+    border-radius: 99px;
+    background: linear-gradient(90deg, var(--green-deep), var(--orange));
+    animation: welcome-load 3.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  @keyframes welcome-rise {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes welcome-pulse {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 1; }
+  }
+  @keyframes welcome-load {
+    from { width: 0%; }
+    to { width: 100%; }
   }

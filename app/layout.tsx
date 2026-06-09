@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import AudioPlayer from "@/components/AudioPlayer";
 import CursorTrail from "@/components/CursorTrail";
+import WelcomeSplash from "@/components/WelcomeSplash";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -45,6 +46,7 @@ export default function RootLayout({
         />
       </head>
       <body>
+        <WelcomeSplash />
         <AudioPlayer />
         {children}
         <CursorTrail />
