@@ -1,17 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { playWelcomeSound, type WelcomeSoundHandle } from "@/lib/welcomeSound";
+import { useEffect, useRef, useState } from "react";
 
 const VISIBLE_MS = 3200;
 const FADE_MS = 700;
 
 export default function WelcomeSplash() {
   const [phase, setPhase] = useState<"in" | "out" | "done">("in");
+  const soundRef = useRef<WelcomeSoundHandle | null>(null);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
+    soundRef.current = playWelcomeSound();
 
-    const fadeTimer = window.setTimeout(() => setPhase("out"), VISIBLE_MS);
+    const fadeTimer = window.setTimeout(() => {
+      setPhase("out");
+      soundRef.current?.stop();
+    }, VISIBLE_MS);
+
     const doneTimer = window.setTimeout(() => {
       setPhase("done");
       document.body.style.overflow = "";
@@ -21,6 +28,7 @@ export default function WelcomeSplash() {
     return () => {
       clearTimeout(fadeTimer);
       clearTimeout(doneTimer);
+      soundRef.current?.stop();
       document.body.style.overflow = "";
     };
   }, []);
