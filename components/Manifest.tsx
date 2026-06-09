@@ -8,6 +8,12 @@ export default function Manifest() {
             Creo en los <em>pequeños rituales</em> — los que sostienen los días
             largos y vuelven cada gesto un <em>acto de amor propio.</em>
           </h2>
+          <p className="manifest-seo">
+            Espacio Su es un espacio de belleza en Paraná, Entre Ríos, fundado
+            por Susana Balcar. Ofrezco cosméticos, productos Natura, perfumes,
+            cuidado de la piel y regalos con productos naturales pensados para
+            tu bienestar.
+          </p>
           <div className="manifest-pillars">
             <div className="pillar">
               <div className="pillar-num">01 / Esencia</div>

@@ -9,8 +9,12 @@ export default function Footer() {
                 Espacio <em>Su</em>
               </div>
               <p className="footer-tag">
-                Apreciar cada día más el cuerpo, cuidarlo por dentro y por fuera
-                — desde este espacio, con amor.
+                Consultora Natura en Paraná, Entre Ríos. Venta de cosméticos,
+                perfumes Natura, productos naturales para el cuidado de la piel
+                y regalos — con asesoramiento de Susana Balcar.
+              </p>
+              <p className="footer-location">
+                Paraná · Entre Ríos · Argentina
               </p>
               <div className="socials">
                 <a
@@ -104,7 +108,7 @@ export default function Footer() {
           </div>
 
           <div className="footer-bottom">
-            <span>© 2026 Espacio Su · Susanita Balcar</span>
+            <span>© 2026 Espacio Su · Susana Balcar</span>
             <span>Full Stack Developer Eliseo J Romero</span>
           </div>
         </div>

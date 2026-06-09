@@ -1,4 +1,12 @@
+import type { Metadata } from "next";
 import Nav from "@/components/Nav";
+import { SEO_DESCRIPTION } from "@/lib/site";
+
+export const metadata: Metadata = {
+  title: "Cosméticos, Perfumes Natura y Cuidado de la Piel en Paraná",
+  description: SEO_DESCRIPTION,
+};
+
 import Hero from "@/components/Hero";
 import Carousel from "@/components/Carousel";
 import Perfume from "@/components/Perfume";

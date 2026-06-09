@@ -1,28 +1,66 @@
 import type { Metadata } from "next";
 import AudioPlayer from "@/components/AudioPlayer";
 import CursorTrail from "@/components/CursorTrail";
+import StructuredData from "@/components/StructuredData";
 import WelcomeSplash from "@/components/WelcomeSplash";
+import { SEO_DESCRIPTION, SEO_KEYWORDS, SITE, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
+const SEO_TITLE =
+  "Espacio Su | Cosméticos y Perfumes Natura en Paraná, Entre Ríos";
+
 export const metadata: Metadata = {
-  title: "Espacio Su · Apreciar cada día más el cuerpo",
-  description:
-    "Espacio Su — perfumería, cosmética natural y rituales de cuidado. Apreciar cada día más el cuerpo, cuidarlo por dentro y por fuera. Con dedicación y amor, desde Argentina.",
-  keywords: [
-    "Espacio Su",
-    "Calma Mía",
-    "perfumería natural",
-    "cosmética",
-    "aromas",
-    "Natura",
-    "Susanita Balcar",
-  ],
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: SEO_TITLE,
+    template: "%s | Espacio Su",
+  },
+  description: SEO_DESCRIPTION,
+  keywords: [...SEO_KEYWORDS],
+  authors: [{ name: SITE.founder, url: SITE_URL }],
+  creator: SITE.founder,
+  publisher: SITE.name,
+  category: "beauty",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "Espacio Su",
-    description:
-      "Apreciar cada día más el cuerpo, cuidarlo por dentro y por fuera.",
     type: "website",
     locale: "es_AR",
+    url: SITE_URL,
+    siteName: SITE.name,
+    title: SEO_TITLE,
+    description: SEO_DESCRIPTION,
+    images: [
+      {
+        url: "/images/foto-08.jpeg",
+        width: 1200,
+        height: 630,
+        alt: "Espacio Su — cosméticos y perfumes Natura en Paraná, Entre Ríos",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SEO_TITLE,
+    description: SEO_DESCRIPTION,
+    images: ["/images/foto-08.jpeg"],
+  },
+  other: {
+    "geo.region": "AR-E",
+    "geo.placename": "Paraná",
+    "geo.position": "-31.7333;-60.5297",
+    ICBM: "-31.7333, -60.5297",
   },
 };
 
@@ -32,8 +70,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es">
+    <html lang="es-AR">
       <head>
+        <StructuredData />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"

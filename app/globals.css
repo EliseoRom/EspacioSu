@@ -855,6 +855,15 @@
     z-index: 1;
   }
   .manifest-card h2 em { font-style: italic; color: var(--cream); }
+  .manifest-seo {
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.88);
+    max-width: 720px;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+  }
   .manifest-pillars {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -981,6 +990,14 @@
     font-size: 13px;
     color: var(--green-soft);
     max-width: 380px;
+    margin-bottom: 12px;
+  }
+  .footer-location {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(201, 226, 125, 0.75);
     margin-bottom: 28px;
     line-height: 1.5;
   }

@@ -53,7 +53,7 @@ export function useReveal() {
     }
 
     const wordTargets = document.querySelectorAll(
-      ".section-title, .pn-title, .pn-intro, .perfume-text p, .gracias-card h3, .gracias-card p, .manifest-card h2, .pillar h4, .pillar p, .hero-manifest, .footer-tag, .pf-info h4, .pf-info p"
+      ".section-title, .pn-title, .pn-intro, .perfume-text p, .gracias-card h3, .gracias-card p, .manifest-card h2, .manifest-seo, .pillar h4, .pillar p, .hero-manifest, .footer-tag, .footer-location, .pf-info h4, .pf-info p"
     );
     wordTargets.forEach(splitIntoWords);
 
